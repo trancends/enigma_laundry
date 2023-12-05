@@ -3,6 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"golang-database-project/entity"
+	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -18,10 +20,18 @@ const (
 var psqlInfo = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
 func main() {
-	addCustomer("C002", "Bagas Putra", "082345778996", "true", "2021-02-01", "M")
+	customer := entity.Customer{
+		Id:            "C003",
+		Name:          "Nikola Tesla",
+		Phone:         "081234789666",
+		Active_member: true,
+		Join_date:     time.Date(2022, 12, 12, 0, 0, 0, 0, time.Local),
+		Gender:        "M",
+	}
+	addCustomer(customer)
 }
 
-func addCustomer(id, name, phone, active_member, join_date, gender string) {
+func addCustomer(customer entity.Customer) {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
@@ -37,7 +47,7 @@ func addCustomer(id, name, phone, active_member, join_date, gender string) {
 
 	sqlStatement := `INSERT INTO mst_customer (id, name, phone,active_member,join_date,gender) 
     VALUES ('$1','$2','$3','$4','$5','$6');`
-	result, err := db.Exec(sqlStatement, id, name, phone, active_member, join_date, gender)
+	result, err := db.Exec(sqlStatement, customer.Id, customer.Name, customer.Phone, customer.Active_member, customer.Gender)
 
 	if err != nil {
 		panic(err)
