@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	"golang-database-project/entity"
-	"time"
 
 	_ "github.com/lib/pq"
 )
@@ -20,17 +19,23 @@ const (
 var psqlInfo = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
 func main() {
-	customer := entity.Customer{
-		Id:            "C004",
-		Name:          "Albert Einstein",
-		Phone:         "081234789222",
-		Active_member: true,
-		Join_date:     time.Date(2023, 11, 11, 0, 0, 0, 0, time.Local),
-		Gender:        "M",
-	}
-	addCustomer(customer)
+	// customer := entity.Customer{
+	// 	Id:            "C004",
+	// 	Name:          "Albert Einstein",
+	// 	Phone:         "081234789111",
+	// 	Active_member: true,
+	// 	Join_date:     time.Date(2023, 11, 11, 0, 0, 0, 0, time.Local),
+	// 	Gender:        "M",
+	// }
+	// addCustomer(customer)
 	// updateCustomer(customer)
-	// deleteCustomer("C003")
+	// deleteCustomer("C004")
+
+	customers := getAllCustomer()
+	for _, customer := range customers {
+		fmt.Println(customer.Id, customer.Name, customer.Phone, customer.Active_member,
+			customer.Join_date, customer.Gender)
+	}
 }
 
 func addCustomer(customer entity.Customer) {
@@ -83,6 +88,44 @@ func deleteCustomer(id string) {
 	}
 
 	fmt.Println(result)
+}
+
+func getAllCustomer() []entity.Customer {
+	db := connectDB()
+	defer db.Close()
+
+	sqlStatement := "SELECT * FROM mst_customer"
+
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	customers := scanCustomer(rows)
+	return customers
+}
+
+func scanCustomer(rows *sql.Rows) []entity.Customer {
+	customers := []entity.Customer{}
+
+	for rows.Next() {
+		customer := entity.Customer{}
+		err := rows.Scan(&customer.Id, &customer.Name, &customer.Phone, &customer.Active_member,
+			&customer.Join_date, &customer.Gender)
+		if err != nil {
+			panic(err)
+		}
+
+		customers = append(customers, customer)
+	}
+
+	err := rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return customers
 }
 
 func connectDB() *sql.DB {
