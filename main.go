@@ -18,6 +18,10 @@ const (
 var psqlInfo = fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
 
 func main() {
+	addCustomer("C002", "Bagas Putra", "082345778996", "true", "2021-02-01", "M")
+}
+
+func addCustomer(id, name, phone, active_member, join_date, gender string) {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		panic(err)
@@ -31,9 +35,9 @@ func main() {
 		fmt.Println("Succesfully Connected!")
 	}
 
-	sqlStatement := `INSERT INTO mst_customer (id, name, phone,active_member,join_date)
-    VALUES ('C001','Sari Ayunda','081234567999','true','2020-02-23')`
-	result, err := db.Exec(sqlStatement)
+	sqlStatement := `INSERT INTO mst_customer (id, name, phone,active_member,join_date,gender) 
+    VALUES ('$1','$2','$3','$4','$5','$6');`
+	result, err := db.Exec(sqlStatement, id, name, phone, active_member, join_date, gender)
 
 	if err != nil {
 		panic(err)
@@ -43,5 +47,3 @@ func main() {
 
 	fmt.Println(result)
 }
-
-func addCustomer(id, name, gender, phone, active_member, join_date string)
