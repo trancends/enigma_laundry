@@ -31,10 +31,17 @@ func main() {
 	// updateCustomer(customer)
 	// deleteCustomer("C004")
 
-	customers := getAllCustomer()
+	// customers := getAllCustomer()
+	// for _, customer := range customers {
+	// 	fmt.Println(customer.Id, customer.Name, customer.Phone, customer.Active_member,
+	// 		customer.Join_date, customer.Gender)
+	// }
+	// customer := getCustomerById("C001")
+	// fmt.Println(customer)
+
+	customers := searchBy("ik")
 	for _, customer := range customers {
-		fmt.Println(customer.Id, customer.Name, customer.Phone, customer.Active_member,
-			customer.Join_date, customer.Gender)
+		fmt.Println(customer)
 	}
 }
 
@@ -106,6 +113,22 @@ func getAllCustomer() []entity.Customer {
 	return customers
 }
 
+func getCustomerById(id string) entity.Customer {
+	db := connectDB()
+	defer db.Close()
+
+	sqlStatement := `SELECT * FROM mst_customer WHERE id = $1`
+
+	customer := entity.Customer{}
+	err := db.QueryRow(sqlStatement, id).Scan(&customer.Id, &customer.Name, &customer.Phone,
+		&customer.Active_member, &customer.Join_date, &customer.Gender)
+	if err != nil {
+		panic(err)
+	}
+
+	return customer
+}
+
 func scanCustomer(rows *sql.Rows) []entity.Customer {
 	customers := []entity.Customer{}
 
@@ -124,6 +147,23 @@ func scanCustomer(rows *sql.Rows) []entity.Customer {
 	if err != nil {
 		panic(err)
 	}
+
+	return customers
+}
+
+func searchBy(name string) []entity.Customer {
+	db := connectDB()
+	defer db.Close()
+
+	sqlStatement := `SELECT * FROM mst_customer WHERE name LIKE $1`
+
+	rows, err := db.Query(sqlStatement, "%"+name+"%")
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	customers := scanCustomer(rows)
 
 	return customers
 }
