@@ -11,4 +11,7 @@ func main() {
 	for _, service := range services {
 		fmt.Println(service.Id, service.Service_name, service.Satuan, service.Price)
 	}
+
+	service := model.GetServiceById("S001")
+	fmt.Println(service.Id, service.Service_name, service.Satuan, service.Price)
 }

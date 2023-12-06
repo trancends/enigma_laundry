@@ -77,6 +77,22 @@ func GetAllService() []Service {
 	return services
 }
 
+func GetServiceById(id string) Service {
+	db := ConnectDB()
+	defer db.Close()
+
+	sqlStatement := `SELECT * FROM mst_service WHERE id = $1`
+
+	service := Service{}
+	err := db.QueryRow(sqlStatement, id).Scan(&service.Id, &service.Service_name,
+		&service.Satuan, &service.Price)
+	if err != nil {
+		panic(err)
+	}
+
+	return service
+}
+
 func scanService(rows *sql.Rows) []Service {
 	services := []Service{}
 
