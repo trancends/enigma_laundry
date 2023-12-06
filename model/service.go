@@ -1,6 +1,9 @@
 package model
 
-import "fmt"
+import (
+	"database/sql"
+	"fmt"
+)
 
 type Service struct {
 	Id           string
@@ -56,4 +59,41 @@ func DeleteService(id string) {
 	}
 
 	fmt.Println(result)
+}
+
+func GetAllService() []Service {
+	db := ConnectDB()
+	defer db.Close()
+
+	sqlStatement := "SELECT id,service_name,satuan,price FROM mst_service"
+
+	rows, err := db.Query(sqlStatement)
+	if err != nil {
+		panic(err)
+	}
+	defer rows.Close()
+
+	services := scanService(rows)
+	return services
+}
+
+func scanService(rows *sql.Rows) []Service {
+	services := []Service{}
+
+	for rows.Next() {
+		service := Service{}
+		err := rows.Scan(&service.Id, &service.Service_name, &service.Satuan, &service.Price)
+		if err != nil {
+			panic(err)
+		}
+
+		services = append(services, service)
+	}
+
+	err := rows.Err()
+	if err != nil {
+		panic(err)
+	}
+
+	return services
 }

@@ -6,12 +6,9 @@ import (
 )
 
 func main() {
-	service := model.Service{
-		Id:           "S004",
-		Service_name: "Laundry Boneka",
-		Satuan:       "Buah",
-		Price:        25000,
+	services := model.GetAllService()
+
+	for _, service := range services {
+		fmt.Println(service.Id, service.Service_name, service.Satuan, service.Price)
 	}
-	fmt.Println(service)
-	model.AddService(service)
 }
