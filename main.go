@@ -1,12 +1,8 @@
 package main
 
 import (
-	// "database/sql"
-	// "fmt"
-
 	"fmt"
 	"golang-database-project/model"
-	// _ "github.com/lib/pq"
 )
 
 func main() {

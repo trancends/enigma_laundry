@@ -3,10 +3,19 @@ package model
 import (
 	"database/sql"
 	"fmt"
-	"golang-database-project/entity"
+	"time"
 )
 
-func AddCustomer(customer entity.Customer) {
+type Customer struct {
+	Id            string
+	Name          string
+	Phone         string
+	Active_member bool
+	Join_date     time.Time
+	Gender        string
+}
+
+func AddCustomer(customer Customer) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -24,7 +33,7 @@ func AddCustomer(customer entity.Customer) {
 	fmt.Println(result)
 }
 
-func UpdateCustomer(customer entity.Customer) {
+func UpdateCustomer(customer Customer) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -58,7 +67,7 @@ func DeleteCustomer(id string) {
 	fmt.Println(result)
 }
 
-func GetAllCustomer() []entity.Customer {
+func GetAllCustomer() []Customer {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -74,13 +83,13 @@ func GetAllCustomer() []entity.Customer {
 	return customers
 }
 
-func GetCustomerById(id string) entity.Customer {
+func GetCustomerById(id string) Customer {
 	db := ConnectDB()
 	defer db.Close()
 
 	sqlStatement := `SELECT * FROM mst_customer WHERE id = $1`
 
-	customer := entity.Customer{}
+	customer := Customer{}
 	err := db.QueryRow(sqlStatement, id).Scan(&customer.Id, &customer.Name, &customer.Phone,
 		&customer.Active_member, &customer.Join_date, &customer.Gender)
 	if err != nil {
@@ -90,11 +99,11 @@ func GetCustomerById(id string) entity.Customer {
 	return customer
 }
 
-func scanCustomer(rows *sql.Rows) []entity.Customer {
-	customers := []entity.Customer{}
+func scanCustomer(rows *sql.Rows) []Customer {
+	customers := []Customer{}
 
 	for rows.Next() {
-		customer := entity.Customer{}
+		customer := Customer{}
 		err := rows.Scan(&customer.Id, &customer.Name, &customer.Phone, &customer.Active_member,
 			&customer.Join_date, &customer.Gender)
 		if err != nil {
@@ -112,7 +121,7 @@ func scanCustomer(rows *sql.Rows) []entity.Customer {
 	return customers
 }
 
-func searchBy(name string) []entity.Customer {
+func searchBy(name string) []Customer {
 	db := ConnectDB()
 	defer db.Close()
 
