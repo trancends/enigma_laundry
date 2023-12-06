@@ -27,7 +27,7 @@ func AddCustomer(customer Customer) {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println("Succesfully INSERT Data")
+		fmt.Println("Succesfully INSERT Customer")
 	}
 
 	fmt.Println(result)
@@ -45,7 +45,7 @@ func UpdateCustomer(customer Customer) {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println("Succesfully Updated Data")
+		fmt.Println("Succesfully Updated Customer")
 	}
 
 	fmt.Println(result)
@@ -61,7 +61,7 @@ func DeleteCustomer(id string) {
 	if err != nil {
 		panic(err)
 	} else {
-		fmt.Println("Succesfully DELETED Data")
+		fmt.Println("Succesfully DELETED Customer")
 	}
 
 	fmt.Println(result)
