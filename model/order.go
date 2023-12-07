@@ -18,7 +18,7 @@ func AddOrder(order Order) {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `INSERT INTO mst_order (id, date_received,date_finished, customer_id,receiver) 
+	sqlStatement := `INSERT INTO order (id, date_received,date_finished, customer_id,receiver) 
     VALUES ($1,$2,$3,$4,$5);`
 	result, err := db.Exec(sqlStatement, order.Id, order.Date_received, order.Date_finished, order.Customer_id, order.Receiver)
 
@@ -35,7 +35,7 @@ func UpdateOrder(order Order) {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `UPDATE mst_order SET date_received = $2, date_finished = $3, customer_id = $4 
+	sqlStatement := `UPDATE order SET date_received = $2, date_finished = $3, customer_id = $4 
     receiver = $5 WHERE id = $1`
 	result, err := db.Exec(sqlStatement, order.Id, order.Date_received, order.Date_finished, order.Customer_id, order.Receiver)
 
@@ -52,7 +52,7 @@ func GetAllOrder() []Order {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := "SELECT id,Order_name,satuan,price FROM mst_Order"
+	sqlStatement := "SELECT id,Order_name,satuan,price FROM order"
 
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
@@ -68,7 +68,7 @@ func GetOrderById(id string) Order {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `SELECT * FROM mst_Order WHERE id = $1`
+	sqlStatement := `SELECT * FROM order WHERE id = $1`
 
 	order := Order{}
 	err := db.QueryRow(sqlStatement, id).Scan(&order.Id, &order.Date_received, &order.Date_finished,
