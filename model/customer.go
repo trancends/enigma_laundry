@@ -15,7 +15,7 @@ type Customer struct {
 	Gender        string
 }
 
-func AddCustomer(customer Customer) {
+func AddCustomer(customer Customer) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -25,12 +25,13 @@ func AddCustomer(customer Customer) {
 		customer.Active_member, customer.Join_date, customer.Gender)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully INSERT Customer")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
 func UpdateCustomer(customer Customer) {
