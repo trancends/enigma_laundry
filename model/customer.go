@@ -27,7 +27,7 @@ func AddCustomer(customer Customer) error {
 	if err != nil {
 		return err
 	} else {
-		fmt.Println("Succesfully INSERT Customer")
+		fmt.Println("Succesfully Added Customer")
 	}
 
 	fmt.Println(result)
