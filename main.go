@@ -44,7 +44,22 @@ func initMenu() {
 
 		switch choice {
 		case 1:
-			os.Exit(0)
+			choice = utils.ViewPrompt()
+
+			switch choice {
+			case 1:
+				utils.ViewCustomer()
+			case 2:
+				os.Exit(0)
+			case 3:
+				os.Exit(0)
+			case 4:
+				os.Exit(0)
+			default:
+				fmt.Println("Invalid choice. Please try again.")
+				os.Exit(0)
+			}
+
 		case 2:
 			choice = utils.AddPrompt()
 
@@ -68,7 +83,17 @@ func initMenu() {
 		case 3:
 			os.Exit(0)
 		case 4:
-			os.Exit(0)
+			choice = utils.DeletePrompt()
+
+			switch choice {
+			case 1:
+				utils.ViewAllCustomerId()
+				utils.DeleteCustomerUtil()
+			case 2:
+				os.Exit(0)
+			default:
+				fmt.Println("Invalid choice. Please try again.")
+			}
 		case 5:
 			fmt.Println("See You Later ^-^")
 			os.Exit(0)

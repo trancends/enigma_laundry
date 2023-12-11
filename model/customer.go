@@ -84,7 +84,7 @@ func GetAllCustomer() []Customer {
 	return customers
 }
 
-func GetCustomerById(id string) Customer {
+func GetCustomerById(id string) (Customer, error) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -93,11 +93,8 @@ func GetCustomerById(id string) Customer {
 	customer := Customer{}
 	err := db.QueryRow(sqlStatement, id).Scan(&customer.Id, &customer.Name, &customer.Phone,
 		&customer.Active_member, &customer.Join_date, &customer.Gender)
-	if err != nil {
-		panic(err)
-	}
 
-	return customer
+	return customer, err
 }
 
 func scanCustomer(rows *sql.Rows) []Customer {
