@@ -11,18 +11,6 @@ import (
 )
 
 func main() {
-	// services := model.GetAllService()
-	//
-	// for _, service := range services {
-	// 	fmt.Println(service.Id, service.Service_name, service.Satuan, service.Price)
-	// }
-
-	// service := model.GetServiceById("S001")
-	// fmt.Println(service.Id, service.Service_name, service.Satuan, service.Price)
-
-	// customer := createCustomer()
-	// fmt.Println(customer)
-	// model.AddCustomer(customer)
 	initMenu()
 }
 
@@ -50,7 +38,7 @@ func initMenu() {
 			case 1:
 				utils.ViewCustomer()
 			case 2:
-				os.Exit(0)
+				utils.ViewService()
 			case 3:
 				os.Exit(0)
 			case 4:
@@ -71,7 +59,11 @@ func initMenu() {
 					fmt.Println("Error", err, "\n", "Please Try Again!")
 				}
 			case 2:
-				os.Exit(0)
+				service := utils.CreateService()
+				err := model.AddService(service)
+				if err != nil {
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				}
 			case 3:
 				os.Exit(0)
 			case 4:
@@ -81,7 +73,35 @@ func initMenu() {
 			}
 
 		case 3:
-			os.Exit(0)
+			choice = utils.UpdatePrompt()
+			switch choice {
+			case 1:
+				fmt.Println()
+				utils.ViewAllCustomerId()
+				fmt.Println()
+				fmt.Println("Enter Detail Below to Updates : ")
+				customer := utils.CreateCustomer()
+				err := model.UpdateCustomer(customer)
+				if err != nil {
+					fmt.Println("Error", "Customer doesn't Exist!", "\n", "Please Try Again!")
+				}
+			case 2:
+				fmt.Println()
+				utils.ViewAllServiceId()
+				fmt.Println()
+				fmt.Println("Enter Detail Below to Updates : ")
+				service := utils.CreateService()
+				err := model.UpdateService(service)
+				if err != nil {
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				}
+			case 3:
+				os.Exit(0)
+			case 4:
+				os.Exit(0)
+			default:
+				fmt.Println("Invalid choice. Please try again.")
+			}
 		case 4:
 			choice = utils.DeletePrompt()
 

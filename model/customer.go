@@ -34,9 +34,14 @@ func AddCustomer(customer Customer) error {
 	return err
 }
 
-func UpdateCustomer(customer Customer) {
+func UpdateCustomer(customer Customer) error {
 	db := ConnectDB()
 	defer db.Close()
+
+	_, err := GetCustomerById(customer.Id)
+	if err != nil {
+		return err
+	}
 
 	sqlStatement := `UPDATE mst_customer SET name = $2, phone = $3, active_member = $4, 
   join_date = $5, gender = $6 WHERE id = $1`
@@ -44,12 +49,13 @@ func UpdateCustomer(customer Customer) {
 		customer.Active_member, customer.Join_date, customer.Gender)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully Updated Customer")
 	}
 
 	fmt.Println(result)
+	return nil
 }
 
 func DeleteCustomer(id string) {

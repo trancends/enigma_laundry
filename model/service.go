@@ -12,7 +12,7 @@ type Service struct {
 	Price        int
 }
 
-func AddService(service Service) {
+func AddService(service Service) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -21,28 +21,35 @@ func AddService(service Service) {
 	result, err := db.Exec(sqlStatement, service.Id, service.Service_name, service.Satuan, service.Price)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
-		fmt.Println("Succesfully INSERT Service")
+		fmt.Println("Succesfully Added Customer")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
-func UpdateService(service Service) {
+func UpdateService(service Service) error {
 	db := ConnectDB()
 	defer db.Close()
+
+	_, err := GetServiceById(service.Id)
+	if err != nil {
+		return err
+	}
 
 	sqlStatement := `UPDATE mst_service SET service_name = $2, satuan = $3, price = $4 WHERE id = $1`
 	result, err := db.Exec(sqlStatement, service.Id, service.Service_name, service.Satuan, service.Price)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
-		fmt.Println("Succesfully Update Service")
+		fmt.Println("Succesfully Updated Service")
 	}
 
 	fmt.Println(result)
+	return nil
 }
 
 func DeleteService(id string) {
@@ -77,7 +84,7 @@ func GetAllService() []Service {
 	return services
 }
 
-func GetServiceById(id string) Service {
+func GetServiceById(id string) (Service, error) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -86,11 +93,8 @@ func GetServiceById(id string) Service {
 	service := Service{}
 	err := db.QueryRow(sqlStatement, id).Scan(&service.Id, &service.Service_name,
 		&service.Satuan, &service.Price)
-	if err != nil {
-		panic(err)
-	}
 
-	return service
+	return service, err
 }
 
 func scanService(rows *sql.Rows) []Service {

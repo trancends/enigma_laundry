@@ -38,10 +38,13 @@ func CheckId(id string) error {
 func ViewCustomer() {
 	customers := model.GetAllCustomer()
 
+	fmt.Println()
+	fmt.Println("Customers : ")
 	for _, customer := range customers {
 		fmt.Printf("%v %v %v %v %s %v \n", customer.Id, customer.Name, customer.Phone, customer.Active_member,
 			customer.Join_date.Format("2006-01-02"), customer.Gender)
 	}
+	fmt.Println()
 }
 
 func ViewAllCustomerId() {
@@ -76,6 +79,7 @@ func CreateCustomer() model.Customer {
 	fmt.Println(strings.Repeat("=", 14), "Add New Customer", strings.Repeat("=", 14))
 	fmt.Println("Enter Customer Details")
 
+	fmt.Println("Example format for Id 'C001' ")
 	for {
 		fmt.Print("Customer Id : ")
 		scanner.Scan()
