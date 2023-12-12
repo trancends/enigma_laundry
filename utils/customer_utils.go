@@ -11,7 +11,23 @@ import (
 	"time"
 )
 
+func ValidateLength(phone string) error {
+	if len(phone) < 11 {
+		return errors.New("phone length needs to be at least 11 numbers")
+	}
+
+	return nil
+}
+
 func ValidateId(id string) error {
+	hasPrefix := strings.HasPrefix(id, "C")
+	if !hasPrefix {
+		return fmt.Errorf("the first character must be '%s'", "C")
+	}
+	return nil
+}
+
+func CheckId(id string) error {
 	_, err := model.GetCustomerById(id)
 	if err != nil {
 		return errors.New("customer does't exist")
@@ -44,7 +60,7 @@ func DeleteCustomerUtil() {
 	fmt.Print("Please enter customer id to be deleted : ")
 	scanner.Scan()
 	id = scanner.Text()
-	err := ValidateId(id)
+	err := CheckId(id)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -59,17 +75,35 @@ func CreateCustomer() model.Customer {
 
 	fmt.Println(strings.Repeat("=", 14), "Add New Customer", strings.Repeat("=", 14))
 	fmt.Println("Enter Customer Details")
-	fmt.Print("Customer Id : ")
-	scanner.Scan()
-	newCustomer.Id = scanner.Text()
+
+	for {
+		fmt.Print("Customer Id : ")
+		scanner.Scan()
+		newCustomer.Id = scanner.Text()
+		err := ValidateId(newCustomer.Id)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			break
+		}
+
+	}
 
 	fmt.Print("Customer Name : ")
 	scanner.Scan()
 	newCustomer.Name = scanner.Text()
 
-	fmt.Print("Customer Phone Number : ")
-	scanner.Scan()
-	newCustomer.Phone = scanner.Text()
+	for {
+		fmt.Print("Customer Phone Number : ")
+		scanner.Scan()
+		newCustomer.Phone = scanner.Text()
+		err := ValidateLength(newCustomer.Phone)
+		if err != nil {
+			fmt.Println(err)
+		} else {
+			break
+		}
+	}
 
 	fmt.Println()
 	fmt.Print("Example: true,t,1,false,f,0\n")
