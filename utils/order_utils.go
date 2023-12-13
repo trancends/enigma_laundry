@@ -10,7 +10,7 @@ import (
 )
 
 func ValidateOrderId(id string) error {
-	hasPrefix := strings.HasPrefix(id, "S")
+	hasPrefix := strings.HasPrefix(id, "O")
 	if !hasPrefix {
 		return fmt.Errorf("the first character must be '%s'", "O")
 	}
@@ -20,7 +20,7 @@ func ValidateOrderId(id string) error {
 func CheckOrderId(id string) error {
 	_, err := model.GetOrderById(id)
 	if err != nil {
-		return errors.New("customer does't exist")
+		return errors.New("order does't exist")
 	}
 	return nil
 }
@@ -29,18 +29,22 @@ func ViewOrder() {
 	orders := model.GetAllOrder()
 
 	fmt.Println()
-	fmt.Println("Services : ")
-	for _, order := range orders {
-		fmt.Printf("%s, %s, %s, %s, %s\n", order.Id, order.Date_received, order.Date_finished,
-			order.Customer_id, order.Receiver)
+	fmt.Println("Orders : ")
+	if len(orders) < 1 {
+		fmt.Println("No orders data (empty table)")
+	} else {
+		for _, order := range orders {
+			fmt.Printf("%s, %s, %s, %s, %s\n", order.Id, order.Date_received, order.Date_finished,
+				order.Customer_id, order.Receiver)
+		}
 	}
 	fmt.Println()
 }
 
-func ViewAllorderId() {
+func ViewAllOrderId() {
 	orders := model.GetAllOrder()
 
-	fmt.Println("Availableorders: ")
+	fmt.Println("AvailableOrders: ")
 	for _, order := range orders {
 		fmt.Printf("%s \n", order.Id)
 	}
@@ -54,7 +58,7 @@ func CreateOrder() model.Order {
 	fmt.Println(strings.Repeat("=", 14), "Add New order", strings.Repeat("=", 14))
 	fmt.Println("Enter order Details")
 
-	fmt.Println("Example format for Id 'S001'")
+	fmt.Println("Example format for Id 'O001'")
 	for {
 		fmt.Print("order Id : ")
 		scanner.Scan()
@@ -101,9 +105,12 @@ func CreateOrder() model.Order {
 		fmt.Print("Customer Id : ")
 		scanner.Scan()
 		newOrder.Customer_id = scanner.Text()
-		err := ValidateId(newOrder.Customer_id)
+		err := ValidateCustomerId(newOrder.Customer_id)
+		err2 := CheckCustomerId(newOrder.Customer_id)
 		if err != nil {
 			fmt.Println(err)
+		} else if err2 != nil {
+			fmt.Println(err2)
 		} else {
 			break
 		}

@@ -11,6 +11,17 @@ import (
 )
 
 func main() {
+	// order := model.Order{
+	// 	Id:            "O001",
+	// 	Date_received: time.Date(2022, 8, 18, 0, 0, 0, 0, time.Local),
+	// 	Date_finished: time.Date(2022, 8, 20, 0, 0, 0, 0, time.Local),
+	// 	Customer_id:   "C002",
+	// 	Receiver:      "Mirna",
+	// }
+	// err := model.UpdateOrder(order)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
 	initMenu()
 }
 
@@ -65,7 +76,11 @@ func initMenu() {
 					fmt.Println("Error", err, "\n", "Please Try Again!")
 				}
 			case 3:
-				os.Exit(0)
+				order := utils.CreateOrder()
+				err := model.AddOrder(order)
+				if err != nil {
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				}
 			case 4:
 				os.Exit(0)
 			default:
@@ -96,7 +111,14 @@ func initMenu() {
 					fmt.Println("Error", "Service doesn't Exist!", "\n", "Please Try Again!")
 				}
 			case 3:
-				os.Exit(0)
+				fmt.Println()
+				utils.ViewAllOrderId()
+				fmt.Println("Enter Detail Below to Updates : ")
+				order := utils.CreateOrder()
+				err := model.UpdateOrder(order)
+				if err != nil {
+					fmt.Println("Error", "Order doesn't Exist!", "\n", "Please Try Again!")
+				}
 			case 4:
 				os.Exit(0)
 			default:
@@ -110,7 +132,8 @@ func initMenu() {
 				utils.ViewAllCustomerId()
 				utils.DeleteCustomerUtil()
 			case 2:
-				os.Exit(0)
+				utils.ViewAllServiceId()
+				utils.DeleteServiceUtil()
 			default:
 				fmt.Println("Invalid choice. Please try again.")
 			}

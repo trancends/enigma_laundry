@@ -14,45 +14,47 @@ type Order struct {
 	Receiver      string
 }
 
-func AddOrder(order Order) {
+func AddOrder(order Order) error {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `INSERT INTO order (id, date_received,date_finished, customer_id,receiver) 
+	sqlStatement := `INSERT INTO orders (id, date_received,date_finished, customer_id,receiver) 
     VALUES ($1,$2,$3,$4,$5);`
 	result, err := db.Exec(sqlStatement, order.Id, order.Date_received, order.Date_finished, order.Customer_id, order.Receiver)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully Added Order")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
-func UpdateOrder(order Order) {
+func UpdateOrder(order Order) error {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `UPDATE order SET date_received = $2, date_finished = $3, customer_id = $4 
+	sqlStatement := `UPDATE orders SET date_received = $2, date_finished = $3, customer_id = $4,
     receiver = $5 WHERE id = $1`
 	result, err := db.Exec(sqlStatement, order.Id, order.Date_received, order.Date_finished, order.Customer_id, order.Receiver)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully Updated Order")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
 func GetAllOrder() []Order {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := "SELECT * FROM order"
+	sqlStatement := "SELECT * FROM orders"
 
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
@@ -68,7 +70,7 @@ func GetOrderById(id string) (Order, error) {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := `SELECT * FROM order WHERE id = $1`
+	sqlStatement := `SELECT * FROM orders WHERE id = $1`
 
 	order := Order{}
 	err := db.QueryRow(sqlStatement, id).Scan(&order.Id, &order.Date_received, &order.Date_finished,

@@ -19,7 +19,7 @@ func ValidateLength(phone string) error {
 	return nil
 }
 
-func ValidateId(id string) error {
+func ValidateCustomerId(id string) error {
 	hasPrefix := strings.HasPrefix(id, "C")
 	if !hasPrefix {
 		return fmt.Errorf("the first character must be '%s'", "C")
@@ -36,7 +36,7 @@ func DateValidation(date string) (time.Time, error) {
 	return newDate, nil
 }
 
-func CheckId(id string) error {
+func CheckCustomerId(id string) error {
 	_, err := model.GetCustomerById(id)
 	if err != nil {
 		return errors.New("customer does't exist")
@@ -72,7 +72,7 @@ func DeleteCustomerUtil() {
 	fmt.Print("Please enter customer id to be deleted : ")
 	scanner.Scan()
 	id = scanner.Text()
-	err := CheckId(id)
+	err := CheckCustomerId(id)
 	if err != nil {
 		fmt.Println(err)
 	} else {
@@ -93,7 +93,7 @@ func CreateCustomer() model.Customer {
 		fmt.Print("Customer Id : ")
 		scanner.Scan()
 		newCustomer.Id = scanner.Text()
-		err := ValidateId(newCustomer.Id)
+		err := ValidateCustomerId(newCustomer.Id)
 		if err != nil {
 			fmt.Println(err)
 		} else {

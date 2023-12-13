@@ -28,9 +28,9 @@ func ValidateServicePrice(price string) (int, error) {
 }
 
 func CheckServiceId(id string) error {
-	_, err := model.GetCustomerById(id)
+	_, err := model.GetServiceById(id)
 	if err != nil {
-		return errors.New("customer does't exist")
+		return errors.New("service does't exist")
 	}
 	return nil
 }
