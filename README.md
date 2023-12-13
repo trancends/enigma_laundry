@@ -24,7 +24,7 @@ Here is my recommendations :
 After installing all the Requirements follow these steps to run the program
 
 1. open terminal and run the code below\
-   ```
+   ```console
    git clone https://git.enigmacamp.com/enigma-20/benedictus-jullian-pradana/challenge-godb.git
    cd challenge-godb
    code .
@@ -47,9 +47,13 @@ After installing all the Requirements follow these steps to run the program
    )
    ```
 
-6. Open terminal and run\
-   `go mod tidy`\
+6. Open terminal and run
+   ```console
+   go mod tidy
+   ```
    to install all the dependencies
-7. and then run\
-   `go run enigma-laundry.go`\
+7. and then run
+   ```console
+   go run enigma-laundry.go
+   ```
    to run the project
