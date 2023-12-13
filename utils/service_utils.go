@@ -30,7 +30,7 @@ func ValidateServicePrice(price string) (int, error) {
 func CheckServiceId(id string) error {
 	_, err := model.GetServiceById(id)
 	if err != nil {
-		return errors.New("service does't exist")
+		return errors.New("service doesn't exist")
 	}
 	return nil
 }
@@ -66,7 +66,10 @@ func DeleteServiceUtil() {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		model.DeleteService(id)
+		err := model.DeleteService(id)
+		if err != nil {
+			fmt.Println("Error", err, "\n the service already has relation")
+		}
 	}
 }
 

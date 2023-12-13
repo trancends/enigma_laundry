@@ -76,7 +76,10 @@ func DeleteCustomerUtil() {
 	if err != nil {
 		fmt.Println(err)
 	} else {
-		model.DeleteCustomer(id)
+		err := model.DeleteCustomer(id)
+		if err != nil {
+			fmt.Println("Error", err, "\nThe customer already has relation.")
+		}
 	}
 }
 

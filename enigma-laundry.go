@@ -11,17 +11,6 @@ import (
 )
 
 func main() {
-	// order := model.Order{
-	// 	Id:            "O001",
-	// 	Date_received: time.Date(2022, 8, 18, 0, 0, 0, 0, time.Local),
-	// 	Date_finished: time.Date(2022, 8, 20, 0, 0, 0, 0, time.Local),
-	// 	Customer_id:   "C002",
-	// 	Receiver:      "Mirna",
-	// }
-	// err := model.UpdateOrder(order)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
 	initMenu()
 }
 
@@ -100,9 +89,14 @@ func initMenu() {
 				fmt.Println()
 				fmt.Println("Enter Detail Below to Updates : ")
 				customer := utils.CreateCustomer()
-				err := model.UpdateCustomer(customer)
+				err := utils.CheckCustomerId(customer.Id)
 				if err != nil {
-					fmt.Println("Error", "Customer doesn't Exist!", "\n", "Please Try Again!")
+					fmt.Println("Error", err)
+				} else {
+					err = model.UpdateCustomer(customer)
+					if err != nil {
+						fmt.Println("Error", err, "\n", "Please Try Again!")
+					}
 				}
 			case 2:
 				fmt.Println()
@@ -110,21 +104,43 @@ func initMenu() {
 				fmt.Println()
 				fmt.Println("Enter Detail Below to Updates : ")
 				service := utils.CreateService()
-				err := model.UpdateService(service)
+				err := utils.CheckServiceId(service.Id)
 				if err != nil {
-					fmt.Println("Error", "Service doesn't Exist!", "\n", "Please Try Again!")
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				} else {
+					err = model.UpdateService(service)
+					if err != nil {
+						fmt.Println("Error", err, "\n", "Please Try Again!")
+					}
 				}
 			case 3:
 				fmt.Println()
 				utils.ViewAllOrderId()
 				fmt.Println("Enter Detail Below to Updates : ")
 				order := utils.CreateOrder()
-				err := model.UpdateOrder(order)
+				err := utils.CheckOrderId(order.Id)
 				if err != nil {
-					fmt.Println("Error", "Order doesn't Exist!", "\n", "Please Try Again!")
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				} else {
+					err := model.UpdateOrder(order)
+					if err != nil {
+						fmt.Println("Error", err, "\n", "Please Try Again!")
+					}
 				}
 			case 4:
-				os.Exit(0)
+				fmt.Println()
+				utils.ViewAllOrderDetailId()
+				fmt.Println("Enter Detail Below to Updates : ")
+				orderDetail := utils.CreateOrderDetail()
+				err := utils.CheckOrderDetailId(orderDetail.Id)
+				if err != nil {
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				} else {
+					err = model.UpdateOrderDetail(orderDetail)
+					if err != nil {
+						fmt.Println("Error", err, "\n", "Please Try Again!")
+					}
+				}
 			default:
 				fmt.Println("Invalid choice. Please try again.")
 			}

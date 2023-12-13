@@ -30,7 +30,7 @@ func ValidateQuantity(quantity string) (int, error) {
 func CheckOrderDetailId(id string) error {
 	_, err := model.GetOrderDetailById(id)
 	if err != nil {
-		return errors.New("the order_detail does't exist")
+		return errors.New("the order_detail doesn't exist")
 	}
 	return nil
 }

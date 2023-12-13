@@ -72,8 +72,8 @@ func GetOrderDetailById(id string) (OrderDetail, error) {
 	sqlStatement := `SELECT * FROM order_detail WHERE id = $1`
 
 	orderDetail := OrderDetail{}
-	err := db.QueryRow(sqlStatement, id).Scan(orderDetail.Id, orderDetail.Order_id,
-		orderDetail.Service_id, orderDetail.Quantity)
+	err := db.QueryRow(sqlStatement, id).Scan(&orderDetail.Id, &orderDetail.Order_id,
+		&orderDetail.Service_id, &orderDetail.Quantity)
 
 	return orderDetail, err
 }
@@ -84,7 +84,7 @@ func scanOrderDetail(rows *sql.Rows) []OrderDetail {
 	for rows.Next() {
 		orderDetail := OrderDetail{}
 		err := rows.Scan(&orderDetail.Id, &orderDetail.Order_id,
-			&orderDetail.Service_id, orderDetail.Quantity)
+			&orderDetail.Service_id, &orderDetail.Quantity)
 		if err != nil {
 			panic(err)
 		}

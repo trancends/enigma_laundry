@@ -52,7 +52,7 @@ func UpdateService(service Service) error {
 	return nil
 }
 
-func DeleteService(id string) {
+func DeleteService(id string) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -60,12 +60,13 @@ func DeleteService(id string) {
 	result, err := db.Exec(sqlStatement, id)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully DELETE Service")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
 func GetAllService() []Service {

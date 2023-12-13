@@ -20,7 +20,7 @@ func ValidateOrderId(id string) error {
 func CheckOrderId(id string) error {
 	_, err := model.GetOrderById(id)
 	if err != nil {
-		return errors.New("order does't exist")
+		return errors.New("order doesn't exist")
 	}
 	return nil
 }
@@ -34,8 +34,8 @@ func ViewOrder() {
 		fmt.Println("No orders data (empty table)")
 	} else {
 		for _, order := range orders {
-			fmt.Printf("%s, %s, %s, %s, %s\n", order.Id, order.Date_received, order.Date_finished,
-				order.Customer_id, order.Receiver)
+			fmt.Printf("%s, %s, %s, %s, %s\n", order.Id, order.Date_received.Format("2006-01-02"),
+				order.Date_finished.Format("2006-01-02"), order.Customer_id, order.Receiver)
 		}
 	}
 	fmt.Println()

@@ -58,7 +58,7 @@ func UpdateCustomer(customer Customer) error {
 	return nil
 }
 
-func DeleteCustomer(id string) {
+func DeleteCustomer(id string) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -66,12 +66,13 @@ func DeleteCustomer(id string) {
 	result, err := db.Exec(sqlStatement, id)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully DELETED Customer")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
 func GetAllCustomer() []Customer {
