@@ -12,7 +12,7 @@ type OrderDetail struct {
 	Quantity   int
 }
 
-func AddOrderDetail(orderDetail OrderDetail) {
+func AddOrderDetail(orderDetail OrderDetail) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -22,15 +22,16 @@ func AddOrderDetail(orderDetail OrderDetail) {
 		orderDetail.Service_id, orderDetail.Quantity)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully Added OrderDetail")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
-func UpdateOrderDetail(orderDetail OrderDetail) {
+func UpdateOrderDetail(orderDetail OrderDetail) error {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -39,12 +40,13 @@ func UpdateOrderDetail(orderDetail OrderDetail) {
 		orderDetail.Service_id, orderDetail.Quantity)
 
 	if err != nil {
-		panic(err)
+		return err
 	} else {
 		fmt.Println("Succesfully Updated OrderDetail")
 	}
 
 	fmt.Println(result)
+	return err
 }
 
 func GetAllOrderDetail() []OrderDetail {
@@ -63,7 +65,7 @@ func GetAllOrderDetail() []OrderDetail {
 	return orderDetails
 }
 
-func GetOrderDetailById(id string) OrderDetail {
+func GetOrderDetailById(id string) (OrderDetail, error) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -72,11 +74,8 @@ func GetOrderDetailById(id string) OrderDetail {
 	orderDetail := OrderDetail{}
 	err := db.QueryRow(sqlStatement, id).Scan(orderDetail.Id, orderDetail.Order_id,
 		orderDetail.Service_id, orderDetail.Quantity)
-	if err != nil {
-		panic(err)
-	}
 
-	return orderDetail
+	return orderDetail, err
 }
 
 func scanOrderDetail(rows *sql.Rows) []OrderDetail {

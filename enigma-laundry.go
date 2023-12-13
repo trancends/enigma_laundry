@@ -53,7 +53,7 @@ func initMenu() {
 			case 3:
 				utils.ViewOrder()
 			case 4:
-				os.Exit(0)
+				utils.ViewOrderDetail()
 			default:
 				fmt.Println("Invalid choice. Please try again.")
 				os.Exit(0)
@@ -82,7 +82,11 @@ func initMenu() {
 					fmt.Println("Error", err, "\n", "Please Try Again!")
 				}
 			case 4:
-				os.Exit(0)
+				orderDetail := utils.CreateOrderDetail()
+				err := model.AddOrderDetail(orderDetail)
+				if err != nil {
+					fmt.Println("Error", err, "\n", "Please Try Again!")
+				}
 			default:
 				fmt.Println("Invalid choice. Please try again.")
 			}
