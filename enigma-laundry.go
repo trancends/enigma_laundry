@@ -40,7 +40,7 @@ func initMenu() {
 			case 2:
 				utils.ViewService()
 			case 3:
-				os.Exit(0)
+				utils.ViewOrder()
 			case 4:
 				os.Exit(0)
 			default:
@@ -93,7 +93,7 @@ func initMenu() {
 				service := utils.CreateService()
 				err := model.UpdateService(service)
 				if err != nil {
-					fmt.Println("Error", err, "\n", "Please Try Again!")
+					fmt.Println("Error", "Service doesn't Exist!", "\n", "Please Try Again!")
 				}
 			case 3:
 				os.Exit(0)

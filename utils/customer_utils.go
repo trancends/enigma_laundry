@@ -27,6 +27,15 @@ func ValidateId(id string) error {
 	return nil
 }
 
+func DateValidation(date string) (time.Time, error) {
+	newDate, err := time.Parse("2006-01-02", date)
+	if err != nil {
+		return time.Time{}, err
+	}
+
+	return newDate, nil
+}
+
 func CheckId(id string) error {
 	_, err := model.GetCustomerById(id)
 	if err != nil {
@@ -118,11 +127,18 @@ func CreateCustomer() model.Customer {
 
 	fmt.Println()
 	fmt.Print("Format yyyy-mm-dd, example: 2023-12-2\n")
-	fmt.Print("Customer Join Date : ")
-	scanner.Scan()
-	fmt.Println(scanner.Text())
-	date, _ := time.Parse("2006-01-02", scanner.Text())
-	newCustomer.Join_date = date
+	for {
+		fmt.Print("Customer Join Date : ")
+		scanner.Scan()
+		fmt.Println(scanner.Text())
+		date, err := DateValidation(scanner.Text())
+		if err != nil {
+			fmt.Println("Please enter a valid Date!")
+		} else {
+			newCustomer.Join_date = date
+			break
+		}
+	}
 
 	fmt.Println()
 	fmt.Print("Example: 'F','M','f','m' \n")

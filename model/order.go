@@ -52,7 +52,7 @@ func GetAllOrder() []Order {
 	db := ConnectDB()
 	defer db.Close()
 
-	sqlStatement := "SELECT id,Order_name,satuan,price FROM order"
+	sqlStatement := "SELECT * FROM order"
 
 	rows, err := db.Query(sqlStatement)
 	if err != nil {
@@ -64,7 +64,7 @@ func GetAllOrder() []Order {
 	return Orders
 }
 
-func GetOrderById(id string) Order {
+func GetOrderById(id string) (Order, error) {
 	db := ConnectDB()
 	defer db.Close()
 
@@ -73,11 +73,8 @@ func GetOrderById(id string) Order {
 	order := Order{}
 	err := db.QueryRow(sqlStatement, id).Scan(&order.Id, &order.Date_received, &order.Date_finished,
 		&order.Customer_id, &order.Receiver)
-	if err != nil {
-		panic(err)
-	}
 
-	return order
+	return order, err
 }
 
 func scanOrder(rows *sql.Rows) []Order {
