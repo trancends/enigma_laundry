@@ -33,7 +33,7 @@ After installing all the Requirements follow these steps to run the program
 2. before continue to the next step, open your favorite sql client,
    create a new connection and then create a new database 'enigma_laundry'
 3. go back to the project folder, copy and paste the content of the file DDL.sql into the sql client query editor
-   and then do the same thing with the DML.sql
+   and then do the same thing with the DML.sql and then run the sql command
 4. go back to the project folder navigate to model/ folder and open connection.go
 5. on line 10 of the code
 
